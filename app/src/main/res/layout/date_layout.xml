@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="180dp"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="5dip"
+    android:paddingTop="10dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_marginBottom="-15dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="选择月份" />
+
+    <DatePicker
+        android:theme="@android:style/Theme.Holo.Light"
+        android:id="@+id/datePickerStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"
+        tools:ignore="NewApi" />
+    <Button
+        android:id="@+id/dd_btn_sure"
+        android:layout_width="match_parent"
+        android:layout_marginTop="-20dp"
+        android:text="确 定"
+        android:textSize="18sp"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

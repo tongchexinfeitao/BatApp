@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dp_94"
+    android:layout_height="@dimen/dp_34"
+    android:layout_marginTop="@dimen/dp_13"
+    android:background="@drawable/item_select"
+    android:orientation="horizontal">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/mtext_item"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/sp_12"
+        android:textColor="@color/item_text_sel"
+        android:textSize="@dimen/sp_14" />
+
+</LinearLayout>
