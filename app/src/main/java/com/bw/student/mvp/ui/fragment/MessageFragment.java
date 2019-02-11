@@ -182,7 +182,7 @@ public class MessageFragment extends BaseFragment<MessagePresenterImpl> implemen
                 break;
             case R.id.pull_time:
                 Calendar cal1 = Calendar.getInstance();
-                cal1.set(YEAR, 2017);
+                cal1.set(YEAR, 2018);
                 cal1.set(Calendar.MONTH, 0);
                 cal1.set(Calendar.DATE, 1);
                 TimePickerDialog dialogYearMonth = new TimePickerDialog.Builder()
