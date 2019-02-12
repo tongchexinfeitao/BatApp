@@ -6,10 +6,10 @@
     android:orientation="vertical"
     tools:context=".mvp.ui.fragment.BlankFragment">
 
-    <xyz.zpayh.hdimage.HDImageView
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <xyz.zpayh.hdimage.HDImageView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/slash_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 
 </LinearLayout>

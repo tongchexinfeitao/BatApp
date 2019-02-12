@@ -4,9 +4,11 @@ import com.bw.student.mvp.base.BaseResponse;
 import com.bw.student.mvp.model.bean.Condition;
 import com.bw.student.mvp.model.bean.Department;
 import com.bw.student.mvp.model.bean.ShowBean;
+import com.bw.student.mvp.model.bean.UpdateBean;
 
 import java.util.HashMap;
 import java.util.List;
+
 import io.reactivex.Observable;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
@@ -35,7 +37,7 @@ public interface ApiService {
 
     // TODO: 2018/12/5 就业学生信息展示列表 
     @GET("enrollment/employmentStudents/verify/v1/findStudentsByCondition")
-    Observable<BaseResponse<List<Condition>>> findStudentsByCondition(@Header("imei") String imei, @QueryMap HashMap<String,String> map);
+    Observable<BaseResponse<List<Condition>>> findStudentsByCondition(@Header("imei") String imei, @QueryMap HashMap<String, String> map);
 
 
     @GET("enrollment/problemAnswer/verify/v1/problemAnswerShow")
@@ -43,5 +45,10 @@ public interface ApiService {
 
     @FormUrlEncoded
     @POST("enrollment/consult/verify/v1/addConsult")
-    Observable<BaseResponse> addConsult(@Header("imei") String imei, @FieldMap HashMap<String,String> map);
+    Observable<BaseResponse> addConsult(@Header("imei") String imei, @FieldMap HashMap<String, String> map);
+
+    @GET("enrollment/tool/findNewVersion")
+    Observable<UpdateBean> checkNewVersion(@Query("versionCode") int versionCode);
+
+
 }

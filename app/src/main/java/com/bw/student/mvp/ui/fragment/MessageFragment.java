@@ -177,8 +177,6 @@ public class MessageFragment extends BaseFragment<MessagePresenterImpl> implemen
     public void onClick(View v) {
         switch (v.getId()) {
             default:
-
-
                 break;
             case R.id.pull_time:
                 Calendar cal1 = Calendar.getInstance();
