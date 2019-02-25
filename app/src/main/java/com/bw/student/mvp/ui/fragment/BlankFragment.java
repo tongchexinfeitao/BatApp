@@ -34,6 +34,8 @@ import com.bw.student.mvp.presenter.SplashPresenterImpl;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
+import java.lang.invoke.ConstantCallSite;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import xyz.zpayh.hdimage.HDImageView;
@@ -60,8 +62,11 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
         return new SplashPresenterImpl();
     }
 
+
+
     @Override
     protected void initData() {
+        ArrayList<Object> objects = new ArrayList<>();
 //        mBtnTest.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
@@ -158,7 +163,7 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
         final DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
         Uri uri = Uri.parse(url);
         DownloadManager.Request request = new DownloadManager.Request(uri);
-        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE);
+//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_MOBILE);
         request.setAllowedOverRoaming(false);
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
         request.setTitle(getActivity().getResources().getString(R.string.app_name));
