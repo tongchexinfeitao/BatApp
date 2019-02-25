@@ -1,15 +1,9 @@
 package com.bw.student.application;
+
 import android.content.Context;
-import android.os.Environment;
 import android.support.multidex.MultiDexApplication;
 
-import com.facebook.cache.disk.DiskCacheConfig;
 import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
-import com.orhanobut.logger.AndroidLogAdapter;
-import com.orhanobut.logger.Logger;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 /**
  * @author Administrator QQ:1228717266
@@ -19,7 +13,7 @@ import com.squareup.leakcanary.RefWatcher;
  */
 public class MyApplication extends MultiDexApplication {
 
-    private RefWatcher refWatcher;
+//    private RefWatcher refWatcher;
 
 
     @Override
@@ -28,10 +22,10 @@ public class MyApplication extends MultiDexApplication {
 
         setContext(this);
         //        LeakCanary解决内存泄漏的问题
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
-        }
-        refWatcher = LeakCanary.install(this);
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return;
+//        }
+//        refWatcher = LeakCanary.install(this);
 
         Fresco.initialize(this);
 
@@ -48,8 +42,8 @@ public class MyApplication extends MultiDexApplication {
     }
 
 
-    public static RefWatcher getRefWatcher(Context context) {
-        MyApplication application = (MyApplication) context.getApplicationContext();
-        return application.refWatcher;
-    }
+//    public static RefWatcher getRefWatcher(Context context) {
+//        MyApplication application = (MyApplication) context.getApplicationContext();
+//        return application.refWatcher;
+//    }
 }

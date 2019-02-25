@@ -1,6 +1,7 @@
 package com.bw.student.mvp.ui.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,14 +13,12 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.bw.student.R;
@@ -29,12 +28,12 @@ import com.bw.student.mvp.contract.SplashContract;
 import com.bw.student.mvp.model.bean.UpdateBean;
 import com.bw.student.mvp.model.net.DataClean;
 import com.bw.student.mvp.model.net.NetworkUtils;
+import com.bw.student.mvp.model.utils.AppDownloadManager;
 import com.bw.student.mvp.model.utils.RsaCoder;
 import com.bw.student.mvp.presenter.SplashPresenterImpl;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
-import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -48,9 +47,10 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
 
     @BindView(R.id.slash_activity)
     HDImageView mSlashActivity;
-    private int REQUEST_PHONE_STATE = 0;
+    private static final int REQUEST_PHONE_STATE = 0;
     private String deviceId;
     private long id;
+    private AppDownloadManager appDownloadManager;
 
     @Override
     protected int protetedId() {
@@ -61,7 +61,6 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
     protected SplashPresenterImpl initPresenter() {
         return new SplashPresenterImpl();
     }
-
 
 
     @Override
@@ -114,6 +113,37 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
         mPresenter.checkNewVersion(getVersionCode(), this);
     }
 
+
+    @SuppressLint("MissingPermission")
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_PHONE_STATE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    TelephonyManager systemService = (TelephonyManager) MyApplication.getContext().getSystemService(Context.TELEPHONY_SERVICE);
+                    deviceId = systemService.getDeviceId();
+                    if (!TextUtils.isEmpty(deviceId)) {
+                        String publicKey = null;
+                        try {
+                            publicKey = RsaCoder.encryptByPublicKey(deviceId);
+                            user.edit().putString("imei", publicKey).commit();
+                            Logger.e(publicKey);
+                            if (!TextUtils.isEmpty(publicKey)) {
+                                mPresenter.campusStyleShow(getActivity(), this, publicKey);
+                            }
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+                } else {
+                    Toast.makeText(getActivity(), "无法获取手机识别码,请允许读取设备信息权限", Toast.LENGTH_SHORT).show();
+                }
+        }
+    }
+
     @Override
     public void campusStyleShowSuccess(String result) {
         Logger.e(result);
@@ -143,8 +173,9 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
                     .setPositiveButton("更新", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            update(updateBean.getUrl());
+                            appDownloadManager.downloadApk(updateBean.getUrl(), getActivity().getResources().getString(R.string.app_name), "正在更新");
                             dialogInterface.dismiss();
+                            Toast.makeText(getActivity(), "在通知栏关注应用下载进度", Toast.LENGTH_SHORT).show();
                         }
                     })
                     .setNegativeButton("取消", null)
@@ -158,6 +189,20 @@ public class BlankFragment extends BaseFragment<SplashPresenterImpl> implements 
 
     }
 
+    @Override
+    public void onResume() {
+        if (appDownloadManager == null) {
+            appDownloadManager = new AppDownloadManager(getActivity());
+        }
+        super.onResume();
+        appDownloadManager.resume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        appDownloadManager.onPause();
+    }
 
     public void update(String url) {
         final DownloadManager downloadManager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
